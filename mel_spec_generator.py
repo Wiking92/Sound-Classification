@@ -49,16 +49,15 @@ class CreateMelSpec:
             file_name = file_path.split('/')[-1].split('.')[0]
             subdir = file_path.split('/')[-2]
             sample, sr = librosa.load(file_path)
-            #print(f"{sample =}, ' in file: ', {file_path=}")
 
             # create mel spectrogram
             ax = plt.axes([0, 0, 1, 1], frameon=False)
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
             mel_s = librosa.feature.melspectrogram(sample, sr=sr, hop_length=self.hop_length, n_fft=self.n_fft,
-                                                   n_mels=self.n_mels)
+                                        n_mels=self.n_mels)
             mel_s_db = librosa.power_to_db(mel_s, ref=np.max)
-            librosa.display.specshow(mel_s_db, sr=sr, ax=ax)
+            librosa.display.specshow(mel_s_db, sr=sr, ax=ax, hop_length=self.hop_length)
             plt.plot()
             plt.savefig('images/' + subdir + '/' + file_name + '.jpg')
 
@@ -67,5 +66,5 @@ class CreateMelSpec:
                   f'{round(counter / len(files_paths) * 100, 2)}%')
 
 
-create_melsp = CreateMelSpec(dataset_path='audio_balanced')
+create_melsp = CreateMelSpec(dataset_path='/Volumes/A002/UrbanSound Dataset/ES_cuted_4sec')
 create_melsp.create_mel_spec()
